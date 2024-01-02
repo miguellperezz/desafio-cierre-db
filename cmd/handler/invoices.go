@@ -27,13 +27,15 @@ func (i *Invoices) GetAll() gin.HandlerFunc {
 
 func (i *Invoices) Post() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		invoices := domain.Invoices{}
+		//invoices := domain.Invoices{}
+		invoices := []domain.Invoices{}
 		err := ctx.ShouldBindJSON(&invoices)
 		if err != nil {
 			ctx.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
-		err = i.s.Create(&invoices)
+		//err = i.s.Create(&invoices)
+		err = i.s.BulkCreate(&invoices)
 		if err != nil {
 			ctx.JSON(500, gin.H{"error": err.Error()})
 			return
