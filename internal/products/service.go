@@ -5,6 +5,7 @@ import "github.com/bootcamp-go/desafio-cierre-db.git/internal/domain"
 type Service interface {
 	Create(product *domain.Product) error
 	ReadAll() ([]*domain.Product, error)
+	BulkCreate(products *[]domain.Product) error
 }
 
 type service struct {
@@ -19,6 +20,16 @@ func (s *service) Create(product *domain.Product) error {
 	_, err := s.r.Create(product)
 	if err != nil {
 		return err
+	}
+	return nil
+}
+
+func (s *service) BulkCreate(products *[]domain.Product) error {
+	for _, product := range *products {
+		_, err := s.r.Create(&product)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

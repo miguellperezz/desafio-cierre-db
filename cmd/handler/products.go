@@ -27,13 +27,15 @@ func (p *Products) GetAll() gin.HandlerFunc {
 
 func (p *Products) Post() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		products := domain.Product{}
+		//products := domain.Product{}
+		var products []domain.Product
 		err := ctx.ShouldBindJSON(&products)
 		if err != nil {
 			ctx.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
-		err = p.s.Create(&products)
+		//err = p.s.Create(&products)
+		err = p.s.BulkCreate(&products)
 		if err != nil {
 			ctx.JSON(500, gin.H{"error": err.Error()})
 			return
