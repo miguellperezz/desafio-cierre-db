@@ -27,17 +27,19 @@ func (s *Sales) GetAll() gin.HandlerFunc {
 
 func (s *Sales) Post() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		sale := domain.Sales{}
-		err := ctx.ShouldBindJSON(&sale)
+		//sale := domain.Sales{}
+		sales := []domain.Sales{}
+		err := ctx.ShouldBindJSON(&sales)
 		if err != nil {
-			ctx.JSON(500, gin.H{"error": err.Error()})
+			ctx.JSON(500, gin.H{"Binding error": err.Error()})
 			return
 		}
-		err = s.s.Create(&sale)
+		//err = s.s.Create(&sale)
+		err = s.s.BulkCreate(&sales)
 		if err != nil {
-			ctx.JSON(500, gin.H{"error": err.Error()})
+			ctx.JSON(500, gin.H{" Bulk create error": err.Error()})
 			return
 		}
-		ctx.JSON(201, gin.H{"data": sale})
+		ctx.JSON(201, gin.H{"data": sales})
 	}
 }

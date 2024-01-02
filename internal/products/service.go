@@ -37,3 +37,7 @@ func (s *service) BulkCreate(products *[]domain.Product) error {
 func (s *service) ReadAll() ([]*domain.Product, error) {
 	return s.r.ReadAll()
 }
+
+func (s *service) GetProduct(id int) (*domain.Product, error) {
+	return s.r.GetProduct(id)
+}

@@ -9,6 +9,7 @@ import (
 type Repository interface {
 	Create(product *domain.Product) (int64, error)
 	ReadAll() ([]*domain.Product, error)
+	GetProduct(id int) (*domain.Product, error)
 }
 
 type repository struct {
@@ -49,4 +50,15 @@ func (r *repository) ReadAll() ([]*domain.Product, error) {
 		products = append(products, &product)
 	}
 	return products, nil
+}
+
+func (r *repository) GetProduct(id int) (*domain.Product, error){
+	query := "SELECT id, name, price FROM products WHERE id = ?"
+	row := r.db.QueryRow(query, id)
+	product := domain.Product{}
+	err := row.Scan(&product.Id, &product.Price)
+	if err != nil {
+		return nil, err
+	}
+	return &product, nil
 }
